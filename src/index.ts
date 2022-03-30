@@ -136,7 +136,7 @@ function componentToHex(c:number, hexFull: boolean) {
 }
 
 function rgbToHex(r:number, g:number, b:number, hexFull:boolean) {
-    return "#" + componentToHex(r, hexFull) + componentToHex(g, hexFull) + componentToHex(b, hexFull);
+    return componentToHex(r, hexFull) + componentToHex(g, hexFull) + componentToHex(b, hexFull);
 }
 
 function outputScaledImage(scaled:number[][][]) {

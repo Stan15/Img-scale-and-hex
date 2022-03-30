@@ -121,7 +121,7 @@ function componentToHex(c, hexFull) {
     return hex;
 }
 function rgbToHex(r, g, b, hexFull) {
-    return "#" + componentToHex(r, hexFull) + componentToHex(g, hexFull) + componentToHex(b, hexFull);
+    return componentToHex(r, hexFull) + componentToHex(g, hexFull) + componentToHex(b, hexFull);
 }
 function outputScaledImage(scaled) {
     let ctx = document.getElementById("scaledImg").getContext("2d");
