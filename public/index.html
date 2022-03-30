@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="script.js"></script>
+    </head>
+    <body>
+        <input id="imgInput" type="file" accept="image" onchange="loadImage()" />
+        <h1>Original Image</h1>
+        <canvas id="originalImg" height="100px"></canvas>
+        <h1>Scaled Image</h1>
+        <ul>
+            <li>
+                <p>lock ratio</p>
+                <input type="checkbox" id="lock-ratio" name="lock-ratio">
+            </li>
+            <li>
+                <p>height</p>
+                <input type="number" id="height" onkeydown="keydownNumberValidation(event)" oninput="setHeight(this.value, ratioLocked())">
+            </li>
+            <li>
+                <p>width</p>
+                <input type="number" id="width" onkeydown="keydownNumberValidation(event)" oninput="setWidth(this.value, ratioLocked())">
+            </li>
+            <li>
+                <button onclick="resetParams()">reset height/width</button>
+            </li>
+            <li>
+                <button onclick="scaleImage()">Scale Image</button>
+            </li>
+        </ul>
+        <canvas id="scaledImg" height="100px"></canvas>
+    </body>
+</html>
