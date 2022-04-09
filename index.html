@@ -22,6 +22,14 @@
                 <input type="number" id="width" onkeydown="keydownNumberValidation(event)" oninput="setWidth(this.value, ratioLocked())">
             </li>
             <li>
+                <p>what value should represent transparency?</p>
+                <input type="text" id="transparency_pixel">
+            </li>
+            <li>
+                <p>what pixel value should we replace any pixel that matches the transparency pixel with?</p>
+                <input type="text" id="transparency_replacement">
+            </li>
+            <li>
                 <button onclick="resetParams()">reset height/width</button>
             </li>
             <li>

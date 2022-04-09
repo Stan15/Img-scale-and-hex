@@ -67,6 +67,9 @@ function scaleImage() {
     copyHEX.onclick = function() {
         let str = "";
 
+        let tr_pix = (<HTMLInputElement>document.getElementById("transparency_pixel"))!.value.replace(/\s/g, "")
+        let tr_rep = (<HTMLInputElement>document .getElementById("transparency_replacement"))!.value.replace(/\s/g, "")
+
         let start = true;
         for (let row of scaled) {
             if (!start) str += "\n";
@@ -76,7 +79,7 @@ function scaleImage() {
             for (let pixel of row) {
                 if (!startInner) str += " ";
                 startInner = false;
-                str += rgbToHex(pixel[0], pixel[1], pixel[2], hexFull.checked);
+                str += rgbToHex(pixel[0], pixel[1], pixel[2], pixel[3], hexFull.checked, tr_pix, tr_rep);
             }
         }
         console.log(str);
@@ -126,17 +129,18 @@ function fallbackCopyTextToClipboard(text:string) {
   }
 
 // https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
-function componentToHex(c:number, hexFull: boolean) {
+function componentToHex(c:number, hexFull: boolean, tr_pix: string, tr_rep: string) {
     let hex = c.toString(16);
     hex = hex.length == 1 ? "0" + hex : hex;
     if (hex.length>1 && !hexFull) {
         hex = hex.charAt(0);
     }
-    return hex;
+    return hex==tr_pix ? tr_rep : hex;
 }
 
-function rgbToHex(r:number, g:number, b:number, hexFull:boolean) {
-    return componentToHex(r, hexFull) + componentToHex(g, hexFull) + componentToHex(b, hexFull);
+function rgbToHex(r:number, g:number, b:number, a:number, hexFull:boolean, tr_pix: string, tr_rep: string) {
+    let isTransparent = a<(0.5*255);
+    return isTransparent ? tr_pix : componentToHex(r, hexFull, tr_pix, tr_rep) + componentToHex(g, hexFull, tr_pix, tr_rep) + componentToHex(b, hexFull, tr_pix, tr_rep);
 }
 
 function outputScaledImage(scaled:number[][][]) {
@@ -158,7 +162,7 @@ function outputScaledImage(scaled:number[][][]) {
             data[s] = x[0];
             data[s + 1] = x[1];
             data[s + 2] = x[2];
-            data[s + 3] = 255;  // fully opaque
+            data[s + 3] = x[3]<(0.5*255) ? 0 : 255;  // fully opaque
         }
     }
 
@@ -170,18 +174,19 @@ function outputScaledImage(scaled:number[][][]) {
 
 function calcScaledRGB() {
     let rgb = getRGBdata((<HTMLCanvasElement>document.getElementById("originalImg")).getContext("2d"));
-    let scaledRGB = [...Array(globalHeight)].map(e => [...Array(globalWidth)].map(e => Array(3)))
+    let scaledRGB = [...Array(Math.floor(globalHeight))].map(e => [...Array(Math.floor(globalWidth))].map(e => Array(4)))
     let newX = 0;
     let newY = 0;
-    for (let i of linspace(0, globalImg.height-1, globalHeight)) {
-        for (let j of linspace(0, globalImg.width-1, globalWidth)) {
+    for (let i of linspace(0, globalImg.height-1, Math.floor(globalHeight))) {
+        for (let j of linspace(0, globalImg.width-1, Math.floor(globalWidth))) {
             let y = Math.round(i);
             let x = Math.round(j);
             let pixelStart = (y*globalImg.width*4)+(x*4);
             scaledRGB[newY][newX] = [
                 rgb[pixelStart],
                 rgb[pixelStart+1],
-                rgb[pixelStart+2]
+                rgb[pixelStart+2],
+                rgb[pixelStart+3]
             ];
             newX = newX + 1;
         }
@@ -215,7 +220,7 @@ function setHeight(height:string, ratioLocked:boolean) {
         return;
     }
     let widthInput = (<HTMLInputElement>document.getElementById("width")!);
-    let newWidth = getHeight()/aspectRatio;
+    let newWidth = Math.round(getHeight()/aspectRatio);
     widthInput.value = newWidth.toString();
     globalWidth = newWidth;
 }
@@ -232,7 +237,7 @@ function setWidth(width:string, ratioLocked:boolean) {
         return;
     }
     let heightInput = (<HTMLInputElement>document.getElementById("width")!);
-    let newHeight = getWidth()*aspectRatio;
+    let newHeight = Math.round(getWidth()*aspectRatio);
     heightInput.value = newHeight.toString();
     globalHeight = newHeight;
 }
