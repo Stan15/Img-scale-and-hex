@@ -114,17 +114,23 @@ function copyTextToClipboard(text) {
     });
 }
 // https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
-function componentToHex(c, hexFull, tr_pix, tr_rep) {
+function componentToHex(c, hexFull) {
     let hex = c.toString(16);
     hex = hex.length == 1 ? "0" + hex : hex;
     if (hex.length > 1 && !hexFull) {
         hex = hex.charAt(0);
     }
-    return parseInt(hex) == parseInt(tr_pix) ? tr_rep : hex;
+    return hex;
 }
 function rgbToHex(r, g, b, a, hexFull, tr_pix, tr_rep) {
     let isTransparent = a < (0.5 * 255);
-    return isTransparent ? tr_pix : componentToHex(r, hexFull, tr_pix, tr_rep) + componentToHex(g, hexFull, tr_pix, tr_rep) + componentToHex(b, hexFull, tr_pix, tr_rep);
+    let hex;
+    if (isTransparent) {
+        hex = tr_pix;
+        return hex;
+    }
+    hex = componentToHex(r, hexFull) + componentToHex(g, hexFull) + componentToHex(b, hexFull);
+    return isTransparent ? tr_pix : parseInt(hex, 16) == parseInt(tr_pix, 16) ? tr_rep : hex;
 }
 function outputScaledImage(scaled) {
     let ctx = document.getElementById("scaledImg").getContext("2d");
