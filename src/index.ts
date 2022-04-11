@@ -243,7 +243,7 @@ function setWidth(width:string, ratioLocked:boolean) {
         aspectRatio = getHeight()/getWidth();
         return;
     }
-    let heightInput = (<HTMLInputElement>document.getElementById("width")!);
+    let heightInput = (<HTMLInputElement>document.getElementById("height")!);
     let newHeight = Math.round(getWidth()*aspectRatio);
     heightInput.value = newHeight.toString();
     globalHeight = newHeight;
