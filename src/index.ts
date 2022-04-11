@@ -135,7 +135,7 @@ function componentToHex(c:number, hexFull: boolean, tr_pix: string, tr_rep: stri
     if (hex.length>1 && !hexFull) {
         hex = hex.charAt(0);
     }
-    return hex==tr_pix ? tr_rep : hex;
+    return parseInt(hex)==parseInt(tr_pix) ? tr_rep : hex;
 }
 
 function rgbToHex(r:number, g:number, b:number, a:number, hexFull:boolean, tr_pix: string, tr_rep: string) {

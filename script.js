@@ -120,7 +120,7 @@ function componentToHex(c, hexFull, tr_pix, tr_rep) {
     if (hex.length > 1 && !hexFull) {
         hex = hex.charAt(0);
     }
-    return hex == tr_pix ? tr_rep : hex;
+    return parseInt(hex) == parseInt(tr_pix) ? tr_rep : hex;
 }
 function rgbToHex(r, g, b, a, hexFull, tr_pix, tr_rep) {
     let isTransparent = a < (0.5 * 255);
