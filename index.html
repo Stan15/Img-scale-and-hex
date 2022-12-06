@@ -22,10 +22,10 @@
                 <input type="number" id="width" onkeydown="keydownNumberValidation(event)" oninput="setWidth(this.value, ratioLocked())">
             </li>
             <li>
-                <input type="text" id="transparency_pixel" placeholder="what value should represent transparency?">
+                <input type="text" title="transparency pixel value" id="transparency_pixel" placeholder="what value should represent transparency?">
             </li>
             <li>
-                <input type="text" id="transparency_replacement" placeholder="what pixel value should we replace any pixel that matches the transparency pixel with?">
+                <input type="text" title="transparency pixel value remap" id="transparency_replacement" placeholder="what pixel value should we remap any pixel that matches the above-specified transparency value to?">
             </li>
             <li>
                 <button onclick="resetParams()">reset height/width</button>
